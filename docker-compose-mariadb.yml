@@ -1,0 +1,32 @@
+services:
+  ishtech-springboot-multidb-app-mariadb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DB_TO_USE: mariadb
+        SERVER_PORT: ${SERVER_PORT:-8080}
+        APP_VERSION:
+    image: ishtech-springboot-multidb-app:mariadb${APP_VERSION:+"-"$APP_VERSION}
+    container_name: ishtech_springboot_multidb_app_mariadb
+    environment:
+      - SPRING_PROFILES_ACTIVE=mariadb
+    ports:
+      - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
+    depends_on:
+      ishtech-springboot-multidb-db-mariadb:
+        condition: service_healthy
+
+  ishtech-springboot-multidb-db-mariadb:
+    image: mariadb:11
+    container_name: ishtech_springboot_multidb_db_mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=Qwer4321
+      - MYSQL_DATABASE=multidb
+      - MYSQL_USER=multidbuser
+      - MYSQL_PASSWORD=multidbpass
+    ports:
+      - "${DB_PORT:-23306}:3306"
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "--silent"]
+      start_period: 45s
