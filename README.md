@@ -1,5 +1,9 @@
 # spring-boot-multi-db
-Spring Boot example with connecting to different DB
+Spring Boot example with connecting to different DB by passing DB name as profile
+
+- java - 25
+- spring-boot - 3.5.7
+- Docker
 
 ## Databases
 - H2
@@ -7,51 +11,33 @@ Spring Boot example with connecting to different DB
 - MySQL
 - PostgreSQL
 
-### DB (with Docker if required)
+## Run
+
+### Run with docker-compose
+
+```
+docker-compose -f docker-compose-h2.yml       stop && SERVER_PORT=8181               docker-compose -f docker-compose-h2.yml       up --build && open http://localhost:8181/about
+
+docker-compose -f docker-compose-mysql.yml    stop && SERVER_PORT=8282 DB_PORT=13306 docker-compose -f docker-compose-mysql.yml    up --build && open http://localhost:8282/about
+
+docker-compose -f docker-compose-mariadb.yml  stop && SERVER_PORT=8383 DB_PORT=23306 docker-compose -f docker-compose-mariadb.yml  up --build && open http://localhost:8383/about
+
+docker-compose -f docker-compose-postgres.yml stop && SERVER_PORT=8484 DB_PORT=15432 docker-compose -f docker-compose-postgres.yml up --build && open http://localhost:8484/about
+
+```
+### Run with local db and local build
+
+#### DB / Tables
 
 - H2
+    - No need of set up
 
-```
-http://localhost:8080/h2-console
 
-SHOW TABLES;
-
-```
-
-- MariaDB
-
-```
-docker run --name multi-db-mariadb \
-  -e MARIADB_ROOT_PASSWORD=rootpass \
-  -e MARIADB_DATABASE=multidb \
-  -e MARIADB_USER=multidbuser \
-  -e MARIADB_PASSWORD=multidbpass \
-  -p 53306:3306 \
-  mariadb:10.6
-
-```
-
-```
-mariadb -u multidbuser -pmultidbpass -D multidb
-
-SHOW TABLES;
-DESC TABLE gold_sample;
-SHOW CREATE TABLE gold_sample\G
-
-```
-
-- MySQL
-
-```
-docker run --name multi-db-mysql \
-  -e MYSQL_ROOT_PASSWORD=rootpass \
-  -e MYSQL_DATABASE=multidb \
-  -e MYSQL_USER=multidbuser \
-  -e MYSQL_PASSWORD=multidbpass \
-  -p 53306:3306 \
-  mysql:8.4
-
-```
+- MariaDB / MySQL
+    - Connect to MariaDB
+        - `mariadb -u multidbuser -pmultidbpass -D multidb`
+    - Connect to MySQL
+        - `mysql -u multidbuser -pmultidbpass -D multidb`
 
 ```
 -- DROP DATABASE IF EXISTS `multidb`;
@@ -72,62 +58,37 @@ GRANT SELECT, INSERT, UPDATE ON `multidb`.* TO `multidbuser`@`%`;
 FLUSH PRIVILEGES;
 ```
 
-```
-mysql -u multidbuser -pmultidbpass -D multidb
-
-SHOW TABLES;
-DESC TABLE gold_sample;
-SHOW CREATE TABLE gold_sample\G
-
-```
-
 - PostgreSQL
-
-```
-docker run --name multi-db-postgres \
- -e POSTGRES_DB=multidb \
- -e POSTGRES_USER=multidbuser \
- -e POSTGRES_PASSWORD=multidbpass \
- -p 55432:5432 \
- postgres:17
-
-```
 
 ```
 psql -U multidbuser -W -d multidb
 
-\dt
+CREATE DATABASE multidb;
 
-\d gold_sample
+CREATE USER multidbuser WITH PASSWORD 'multidbpass';
 
+GRANT ALL PRIVILEGES ON DATABASE multidb TO multidbuser;
+
+\c multidb
+
+GRANT USAGE, CREATE ON SCHEMA public TO multidbuser;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO multidbuser;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO multidbuser;
 ```
 
-## Build and Run
+#### Junit
 
-### Local
 - Need
-    - JDK21 or higher
-    - Maven
+    - JDK25 or higher
     - Docker
-
-- Build
-    - If you want to build with tests then you need to pass spring profile, see next
-
-```
-mvn clean install -DskipTests -P h2
-mvn clean install -DskipTests -P mariadb
-mvn clean install -DskipTests -P mysql
-mvn clean install -DskipTests -P postgres
-
-```
 
 - Test
 
 ```
-mvn test -P h2       -Dspring.profiles.active=h2
-mvn test -P mariadb  -Dspring.profiles.active=mariadb
-mvn test -P mysql    -Dspring.profiles.active=mysql
-mvn test -P postgres -Dspring.profiles.active=postgres
+./mvnw test -P h2       -Dspring.profiles.active=h2
+./mvnw test -P mariadb  -Dspring.profiles.active=mariadb
+./mvnw test -P mysql    -Dspring.profiles.active=mysql
+./mvnw test -P postgres -Dspring.profiles.active=postgres
 
 ```
 
@@ -135,9 +96,9 @@ mvn test -P postgres -Dspring.profiles.active=postgres
     - Ensure the port, db properties are correct in application-xxx.properties / application-xxx.yml
 
 ```
-mvn spring-boot:run -P h2       -Dspring-boot.run.profiles=h2
-mvn spring-boot:run -P mariadb  -Dspring-boot.run.profiles=mariadb
-mvn spring-boot:run -P mysql    -Dspring-boot.run.profiles=mysql
-mvn spring-boot:run -P postgres -Dspring-boot.run.profiles=postgres
+./mvnw spring-boot:run -P h2       -Dspring-boot.run.profiles=h2
+./mvnw spring-boot:run -P mariadb  -Dspring-boot.run.profiles=mariadb
+./mvnw spring-boot:run -P mysql    -Dspring-boot.run.profiles=mysql
+./mvnw spring-boot:run -P postgres -Dspring-boot.run.profiles=postgres
 
 ```
