@@ -11,6 +11,7 @@ services:
     container_name: ishtech_springboot_multidb_app_mariadb
     environment:
       - SPRING_PROFILES_ACTIVE=mariadb
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://ishtech-springboot-multidb-db-mariadb:3306/multidb
     ports:
       - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
     depends_on:

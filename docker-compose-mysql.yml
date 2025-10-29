@@ -11,6 +11,7 @@ services:
     container_name: ishtech_springboot_multidb_app_mysql
     environment:
       - SPRING_PROFILES_ACTIVE=mysql
+      - SPRING_DATASOURCE_URL=jdbc:mysql://ishtech-springboot-multidb-db-mysql:3306/multidb
     ports:
       - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
     depends_on:
@@ -18,7 +19,7 @@ services:
         condition: service_healthy
 
   ishtech-springboot-multidb-db-mysql:
-    image: mysql:8.4
+    image: mysql:lts
     container_name: ishtech_springboot_multidb_db_mysql
     environment:
       - MYSQL_ROOT_PASSWORD=Qwer4321
@@ -28,5 +29,5 @@ services:
     ports:
       - "${DB_PORT:-13306}:3306"
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
       start_period: 45s
