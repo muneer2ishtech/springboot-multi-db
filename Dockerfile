@@ -27,6 +27,6 @@ ENV SPRING_PROFILES_ACTIVE=${DB_TO_USE}
 ARG SERVER_PORT=8080
 EXPOSE ${SERVER_PORT}
 
-COPY --from=build /app/target/spring-boot-multi-db-*.jar app.jar
+COPY --from=build /app/target/ishtech-spring-boot-multi-db-${APP_VERSION:-*}.jar ishtech-spring-boot-multi-db.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "ishtech-spring-boot-multi-db.jar"]
