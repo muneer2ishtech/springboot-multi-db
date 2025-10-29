@@ -13,7 +13,7 @@
 
 	<groupId>fi.ishtech.practice</groupId>
 	<artifactId>ishtech-spring-boot-multi-db</artifactId>
-	<version>0.2.0</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>spring-boot-multi-db</name>
