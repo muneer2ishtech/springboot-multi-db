@@ -12,21 +12,22 @@ RUN case "$DB_TO_USE" in \
     esac
 
 WORKDIR /app
+
 COPY . .
+
 RUN chmod +x ./mvnw
 RUN ./mvnw clean package -q -DskipTests=true -P ${DB_TO_USE}
 
 # ====== Stage 2: Runtime ======
 FROM eclipse-temurin:25-jre
 
-ARG APP_VERSION=
-
 ARG DB_TO_USE
 ENV SPRING_PROFILES_ACTIVE=${DB_TO_USE}
 
 ARG SERVER_PORT=8080
+ENV SERVER_PORT=${SERVER_PORT}
 EXPOSE ${SERVER_PORT}
 
-COPY --from=build /app/target/ishtech-spring-boot-multi-db-${APP_VERSION:-*}.jar ishtech-spring-boot-multi-db.jar
+COPY --from=build /app/target/ishtech-spring-boot-multi-db-*.jar ishtech-spring-boot-multi-db.jar
 
 ENTRYPOINT ["java", "-jar", "ishtech-spring-boot-multi-db.jar"]
