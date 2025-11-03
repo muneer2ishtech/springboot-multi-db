@@ -28,6 +28,6 @@ ARG SERVER_PORT=8080
 ENV SERVER_PORT=${SERVER_PORT}
 EXPOSE ${SERVER_PORT}
 
-COPY --from=build /app/target/ishtech-spring-boot-multi-db-*.jar ishtech-spring-boot-multi-db.jar
+COPY --from=build /app/target/ishtech-springboot-multi-db-*.jar ishtech-springboot-multi-db.jar
 
-ENTRYPOINT ["java", "-jar", "ishtech-spring-boot-multi-db.jar"]
+ENTRYPOINT ["java", "-jar", "ishtech-springboot-multi-db.jar"]

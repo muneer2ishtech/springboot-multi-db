@@ -1,5 +1,5 @@
 spring:
   application:
-    name: spring-boot-multi-db
+    name: springboot-multi-db
   flyway:
     enabled: false

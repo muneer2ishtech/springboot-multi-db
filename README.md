@@ -1,4 +1,4 @@
-# spring-boot-multi-db
+# springboot-multi-db
 Spring Boot example with connecting to different DB by passing DB name as profile
 
 - java - 25
