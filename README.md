@@ -80,6 +80,8 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 - You can change port numbers as per your choice and availability
 - You can run any or all of below simulantenously
 
+##### Individually
+
 ```
 export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
 echo $APP_VERSION
@@ -93,6 +95,27 @@ SERVER_PORT=8383 DB_PORT=23306 APP_VERSION=$APP_VERSION docker-compose -f docker
 SERVER_PORT=8484 DB_PORT=15432 APP_VERSION=$APP_VERSION docker-compose -f docker-compose-postgres.yml up --build
 
 ```
+
+#### All at once
+
+```
+export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
+echo $APP_VERSION
+
+SERVER_PORT_H2=8181 \
+SERVER_PORT_MYSQL=8282 DB_PORT_MYSQL=13306 \
+SERVER_PORT_MARIADB=8383 DB_PORT_MARIADB=23306 \
+SERVER_PORT_POSTGRES=8484 DB_PORT_POSTGRES=15432 \
+APP_VERSION=$APP_VERSION \
+docker-compose \
+  -f docker-compose-h2.yml \
+  -f docker-compose-mysql.yml \
+  -f docker-compose-mariadb.yml \
+  -f docker-compose-postgres.yml \
+up --build
+
+```
+
 
 ### Test
 

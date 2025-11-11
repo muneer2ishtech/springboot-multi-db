@@ -5,20 +5,20 @@ services:
       dockerfile: Dockerfile
       args:
         DB_TO_USE: mysql
-        SERVER_PORT: ${SERVER_PORT:-8080}
+        SERVER_PORT: ${SERVER_PORT_MYSQL:-${SERVER_PORT:-8080}}
         APP_VERSION:
-    image: ishtech-springboot-multidb-app:${APP_VERSION:+$APP_VERSION-}mysql
+    image: muneer2ishtech/ishtech-springboot-multidb-app:${APP_VERSION:+$APP_VERSION-}mysql
     container_name: ishtech_springboot_multidb_app_mysql
     environment:
       - SPRING_PROFILES_ACTIVE=mysql
       - SPRING_DATASOURCE_URL=jdbc:mysql://ishtech-springboot-multidb-db-mysql:3306/multidb
     ports:
-      - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
+      - "${SERVER_PORT_MYSQL:-${SERVER_PORT:-8080}}:${SERVER_PORT_MYSQL:-${SERVER_PORT:-8080}}"
     depends_on:
       ishtech-springboot-multidb-db-mysql:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${SERVER_PORT:-8080}/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:${SERVER_PORT_MYSQL:-${SERVER_PORT:-8080}}/actuator/health"]
       start_period: 60s
 
   ishtech-springboot-multidb-db-mysql:
@@ -30,7 +30,7 @@ services:
       - MYSQL_USER=multidbuser
       - MYSQL_PASSWORD=multidbpass
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "${DB_PORT_MYSQL:-${DB_PORT:-3306}}:3306"
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
       start_period: 45s
