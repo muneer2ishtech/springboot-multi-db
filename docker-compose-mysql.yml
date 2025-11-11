@@ -20,6 +20,8 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${SERVER_PORT_MYSQL:-${SERVER_PORT:-8080}}/actuator/health"]
       start_period: 60s
+    networks:
+      - ishtech-springboot-multidb-network
 
   ishtech-springboot-multidb-db-mysql:
     image: mysql:lts
@@ -36,6 +38,12 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
       start_period: 45s
+    networks:
+      - ishtech-springboot-multidb-network
 
 volumes:
   ishtech_springboot_multidb_volume_mysql:
+
+networks:
+  ishtech-springboot-multidb-network:
+    driver: bridge
