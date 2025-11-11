@@ -3,8 +3,8 @@ package fi.ishtech.practice.multidb.controller;
 import java.io.IOException;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -48,16 +48,17 @@ public class HomeController {
 	}
 
 	@GetMapping("/about")
-	public ResponseEntity<Map<String, String>> about() throws IOException {
+	public ResponseEntity<Map<String, String>> about() {
 		log.trace("Getting application details");
 
-		Map<String, String> results = new TreeMap<String, String>();
+		Map<String, String> results = new LinkedHashMap<String, String>();
 
 		results.put("applicationName", appName);
 		results.put("activeProfile", activeProfile);
-		results.put("datasource", ds);
 
 		results.put("version", appVersion());
+
+		results.put("datasource", ds);
 
 		results.putAll(dbMetaData());
 
@@ -66,19 +67,27 @@ public class HomeController {
 		return ResponseEntity.ok(results);
 	}
 
-	private String appVersion() throws IOException {
+	private String appVersion() {
 		log.trace("Getting application version");
 
-		Manifest manifest = new Manifest(
-				SpringBootMultiDbApplication.class.getResourceAsStream("/META-INF/MANIFEST.MF"));
-		String version = (String) manifest.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION);
+		String version;
+
+		try {
+			Manifest manifest = new Manifest(
+					SpringBootMultiDbApplication.class.getResourceAsStream("/META-INF/MANIFEST.MF"));
+			version = (String) manifest.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION);
+		} catch (IOException e) {
+			log.error("Error in accessing Manifest", e);
+			throw new RuntimeException(e);
+		}
+
 		return version;
 	}
 
 	private Map<String, String> dbMetaData() {
 		log.trace("Getting DatabaseMetaData");
 
-		Map<String, String> info = new TreeMap<String, String>();
+		Map<String, String> info = new LinkedHashMap<String, String>();
 
 		try {
 			DatabaseMetaData metaData = dataSource.getConnection().getMetaData();

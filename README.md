@@ -112,7 +112,8 @@ docker-compose \
   -f docker-compose-mysql.yml \
   -f docker-compose-mariadb.yml \
   -f docker-compose-postgres.yml \
-up --build
+up \
+--build
 
 ```
 

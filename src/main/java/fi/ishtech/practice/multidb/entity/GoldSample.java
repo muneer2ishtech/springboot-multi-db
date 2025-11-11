@@ -1,5 +1,6 @@
 package fi.ishtech.practice.multidb.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
@@ -20,6 +21,7 @@ import lombok.Data;
 @Data
 public class GoldSample implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 8065613371183549099L;
 
 	@Id

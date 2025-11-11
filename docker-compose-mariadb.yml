@@ -20,9 +20,11 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${SERVER_PORT_MARIADB:-${SERVER_PORT:-8080}}/actuator/health"]
       start_period: 60s
+    networks:
+      - ishtech-springboot-multidb-network
 
   ishtech-springboot-multidb-db-mariadb:
-    image: mariadb:latest
+    image: mariadb:lts
     container_name: ishtech_springboot_multidb_db_mariadb
     environment:
       - MYSQL_ROOT_PASSWORD=Qwer4321
@@ -30,7 +32,18 @@ services:
       - MYSQL_USER=multidbuser
       - MYSQL_PASSWORD=multidbpass
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "${DB_PORT_MARIADB:-${DB_PORT:-3306}}:3306"
+    volumes:
+      - ishtech_springboot_multidb_volume_mariadb:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "--silent"]
       start_period: 45s
+    networks:
+      - ishtech-springboot-multidb-network
+
+volumes:
+  ishtech_springboot_multidb_volume_mariadb:
+
+networks:
+  ishtech-springboot-multidb-network:
+    driver: bridge
