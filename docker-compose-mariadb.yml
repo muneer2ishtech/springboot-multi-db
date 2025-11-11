@@ -31,6 +31,11 @@ services:
       - MYSQL_PASSWORD=multidbpass
     ports:
       - "${DB_PORT_MARIADB:-${DB_PORT:-3306}}:3306"
+    volumes:
+      - ishtech_springboot_multidb_volume_mariadb:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "--silent"]
       start_period: 45s
+
+volumes:
+  ishtech_springboot_multidb_volume_mariadb:
