@@ -15,8 +15,10 @@ WORKDIR /app
 
 COPY . .
 
+ARG MAVEN_CLI_OPTS="-B -q"
+
 RUN chmod +x ./mvnw
-RUN ./mvnw clean package -q -DskipTests=true -P ${DB_TO_USE}
+RUN ./mvnw $MAVEN_CLI_OPTS clean package -DskipTests=true -P ${DB_TO_USE}
 
 # ====== Stage 2: Runtime ======
 FROM eclipse-temurin:25-jre
