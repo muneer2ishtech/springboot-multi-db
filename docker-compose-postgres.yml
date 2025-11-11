@@ -24,7 +24,7 @@ services:
       - ishtech-springboot-multidb-network
 
   ishtech-springboot-multidb-db-postgres:
-    image: postgres:latest
+    image: postgres:18
     container_name: ishtech_springboot_multidb_db_postgres
     environment:
       - POSTGRES_DB=multidb
@@ -33,7 +33,7 @@ services:
     ports:
       - "${DB_PORT_POSTGRES:-${DB_PORT:-5432}}:5432"
     volumes:
-      - ishtech_springboot_multidb_volume_postgres:/var/lib/postgresql/data
+      - ishtech_springboot_multidb_volume_postgres:/var/lib/postgresql/18/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       start_period: 45s
