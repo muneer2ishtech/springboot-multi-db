@@ -1,7 +1,9 @@
 spring:
+  application:
+    name: springboot-multi-db-mariadb
   datasource:
     name: multidb-mariadb-ds
-    url: jdbc:mariadb://localhost:53306/multidb
+    url: jdbc:mariadb://localhost:23306/multidb
     username: multidbuser
     password: multidbpass
     driver-class-name: org.mariadb.jdbc.Driver

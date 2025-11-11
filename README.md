@@ -1,124 +1,143 @@
-# spring-boot-multi-db
-Spring Boot example with connecting to different DB
+# springboot-multi-db
+Spring Boot example with connecting to different DB by passing DB name as profile
 
-## Databases
+## Tech stack
+- Java: 25
+- Spring Boot: 3.5.7
+- Containerization: Docker
+
+### Databases
 - H2
 - MariaDB
 - MySQL
 - PostgreSQL
 
-### DB (with Docker if required)
+##
 
-- H2
+[GIT](https://github.com/muneer2ishtech/springboot-multi-db)
 
-```
-http://localhost:8080/h2-console
 
-SHOW TABLES;
+## DB
 
-```
+- I have customized docker for various databases
+    - See [https://github.com/IshTech/docker-db](https://github.com/IshTech/docker-db)
 
-- MariaDB
+#### H2
+- No need of set up
 
-```
-docker run --name multi-db-mariadb \
-  -e MARIADB_ROOT_PASSWORD=rootpass \
-  -e MARIADB_DATABASE=multidb \
-  -e MARIADB_USER=multidbuser \
-  -e MARIADB_PASSWORD=multidbpass \
-  -p 53306:3306 \
-  mariadb:10.6
 
-```
+#### MariaDB / MySQL
 
-```
-mariadb -u multidbuser -pmultidbpass -D multidb
+- Login to DB as `root` and run [init_db_mysql.sql](src/test/resources/db/init_db_mysql.sql) to setup DB Schema, DB User and Grant privileges
 
-SHOW TABLES;
-DESC TABLE gold_sample;
-SHOW CREATE TABLE gold_sample\G
+- Connect to MariaDB
+    - `mariadb -u multidbuser -pmultidbpass -D multidb`
+- Connect to MySQL
+    - `mysql -u multidbuser -pmultidbpass -D multidb`
 
-```
 
-- MySQL
+#### PostgreSQL
 
-```
-docker run --name multi-db-mysql \
-  -e MYSQL_ROOT_PASSWORD=rootpass \
-  -e MYSQL_DATABASE=multidb \
-  -e MYSQL_USER=multidbuser \
-  -e MYSQL_PASSWORD=multidbpass \
-  -p 53306:3306 \
-  mysql:8.4
+- Login to DB as `root` / `superuser` and run [init_db_postgres.sql](src/test/resources/db/init_db_postgres.sql) to setup DB Schema, DB User and Grant privileges
 
-```
+- Connect to PostgreSQL
+    - `psql -U multidbuser -W -d multidb`
+    - Enter password on prompt `multidbpass`
 
-```
-mysql -u multidbuser -pmultidbpass -D multidb
-
-SHOW TABLES;
-DESC TABLE gold_sample;
-SHOW CREATE TABLE gold_sample\G
-
-```
-
-- PostgreSQL
-
-```
-docker run --name multi-db-postgres \
- -e POSTGRES_DB=multidb \
- -e POSTGRES_USER=multidbuser \
- -e POSTGRES_PASSWORD=multidbpass \
- -p 55432:5432 \
- postgres:17
-
-```
-
-```
-psql -U multidbuser -W -d multidb
-
-\dt
-
-\d gold_sample
-
-```
 
 ## Build and Run
 
-### Local
-- Need
-    - JDK21 or higher
-    - Maven
-    - Docker
+### Maven
 
-- Build
-    - If you want to build with tests then you need to pass spring profile, see next
+#### Junit Test
+
+- Local or Docker instance of DB should be running
 
 ```
-mvn clean install -DskipTests -P h2
-mvn clean install -DskipTests -P mariadb
-mvn clean install -DskipTests -P mysql
-mvn clean install -DskipTests -P postgres
+./mvnw test -P h2       -Dspring.profiles.active=h2
+./mvnw test -P mariadb  -Dspring.profiles.active=mariadb
+./mvnw test -P mysql    -Dspring.profiles.active=mysql
+./mvnw test -P postgres -Dspring.profiles.active=postgres
 
 ```
 
-- Test
+#### Local Maven Run
+
+- Ensure the port, db properties are correct in application-xxx.properties / application-xxx.yml
 
 ```
-mvn test -P h2       -Dspring.profiles.active=h2
-mvn test -P mariadb  -Dspring.profiles.active=mariadb
-mvn test -P mysql    -Dspring.profiles.active=mysql
-mvn test -P postgres -Dspring.profiles.active=postgres
+./mvnw spring-boot:run -P h2       -Dspring-boot.run.profiles=h2
+./mvnw spring-boot:run -P mariadb  -Dspring-boot.run.profiles=mariadb
+./mvnw spring-boot:run -P mysql    -Dspring-boot.run.profiles=mysql
+./mvnw spring-boot:run -P postgres -Dspring-boot.run.profiles=postgres
 
 ```
 
-- Run
-    - Ensure the port, db properties are correct in application-xxx.properties / application-xxx.yml
+### Docker
+
+#### Run with docker compose
+
+- You can change port numbers as per your choice and availability
+- You can run any or all of below simulantenously
+
+##### Individually
 
 ```
-mvn spring-boot:run -P h2       -Dspring-boot.run.profiles=h2
-mvn spring-boot:run -P mariadb  -Dspring-boot.run.profiles=mariadb
-mvn spring-boot:run -P mysql    -Dspring-boot.run.profiles=mysql
-mvn spring-boot:run -P postgres -Dspring-boot.run.profiles=postgres
+export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
+echo $APP_VERSION
 
+SERVER_PORT=8181               APP_VERSION=$APP_VERSION docker-compose -f docker-compose-h2.yml       up --build
+
+SERVER_PORT=8282 DB_PORT=13306 APP_VERSION=$APP_VERSION docker-compose -f docker-compose-mysql.yml    up --build
+
+SERVER_PORT=8383 DB_PORT=23306 APP_VERSION=$APP_VERSION docker-compose -f docker-compose-mariadb.yml  up --build
+
+SERVER_PORT=8484 DB_PORT=15432 APP_VERSION=$APP_VERSION docker-compose -f docker-compose-postgres.yml up --build
+
+```
+
+#### All at once
+
+```
+export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
+echo $APP_VERSION
+
+SERVER_PORT_H2=8181 \
+SERVER_PORT_MYSQL=8282 DB_PORT_MYSQL=13306 \
+SERVER_PORT_MARIADB=8383 DB_PORT_MARIADB=23306 \
+SERVER_PORT_POSTGRES=8484 DB_PORT_POSTGRES=15432 \
+APP_VERSION=$APP_VERSION \
+docker-compose \
+  -f docker-compose-h2.yml \
+  -f docker-compose-mysql.yml \
+  -f docker-compose-mariadb.yml \
+  -f docker-compose-postgres.yml \
+up \
+--build
+
+```
+
+
+### Test
+
+- H2
+    - <http://localhost:8181/about>
+
+
+- MariaDB
+    - <http://localhost:8282/about>
+
+
+- MySQL
+    - <http://localhost:8383/about>
+
+
+- PostgreSQL
+    - <http://localhost:8484/about>
+
+```
+start http://localhost:8181/about
+start http://localhost:8282/about
+start http://localhost:8383/about
+start http://localhost:8484/about
 ```
