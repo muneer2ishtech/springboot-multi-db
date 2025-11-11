@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: springboot-multi-db-postgres
   datasource:
     name: multidb-postgres-ds
     url: jdbc:postgresql://localhost:55432/multidb

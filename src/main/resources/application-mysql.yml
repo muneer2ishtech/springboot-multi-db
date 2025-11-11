@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: springboot-multi-db-mysql
   datasource:
     name: multidb-mysql-ds
     url: jdbc:mysql://localhost:13306/multidb

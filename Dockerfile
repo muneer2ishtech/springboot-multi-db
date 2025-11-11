@@ -15,8 +15,10 @@ WORKDIR /app
 
 COPY . .
 
+ARG MAVEN_CLI_OPTS="-B -q"
+
 RUN chmod +x ./mvnw
-RUN ./mvnw clean package -q -DskipTests=true -P ${DB_TO_USE}
+RUN ./mvnw $MAVEN_CLI_OPTS clean package -DskipTests=true -P ${DB_TO_USE}
 
 # ====== Stage 2: Runtime ======
 FROM eclipse-temurin:25-jre
@@ -28,6 +30,6 @@ ARG SERVER_PORT=8080
 ENV SERVER_PORT=${SERVER_PORT}
 EXPOSE ${SERVER_PORT}
 
-COPY --from=build /app/target/ishtech-spring-boot-multi-db-*.jar ishtech-spring-boot-multi-db.jar
+COPY --from=build /app/target/ishtech-springboot-multi-db-*.jar ishtech-springboot-multi-db.jar
 
-ENTRYPOINT ["java", "-jar", "ishtech-spring-boot-multi-db.jar"]
+ENTRYPOINT ["java", "-jar", "ishtech-springboot-multi-db.jar"]

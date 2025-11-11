@@ -1,88 +1,57 @@
-# spring-boot-multi-db
+# springboot-multi-db
 Spring Boot example with connecting to different DB by passing DB name as profile
 
-- java - 25
-- spring-boot - 3.5.7
-- Docker
+## Tech stack
+- Java: 25
+- Spring Boot: 3.5.7
+- Containerization: Docker
 
-## Databases
+### Databases
 - H2
 - MariaDB
 - MySQL
 - PostgreSQL
 
-## Run
+##
 
-### Run with docker-compose
-
-```
-docker-compose -f docker-compose-h2.yml       stop && SERVER_PORT=8181               docker-compose -f docker-compose-h2.yml       up --build && open http://localhost:8181/about
-
-docker-compose -f docker-compose-mysql.yml    stop && SERVER_PORT=8282 DB_PORT=13306 docker-compose -f docker-compose-mysql.yml    up --build && open http://localhost:8282/about
-
-docker-compose -f docker-compose-mariadb.yml  stop && SERVER_PORT=8383 DB_PORT=23306 docker-compose -f docker-compose-mariadb.yml  up --build && open http://localhost:8383/about
-
-docker-compose -f docker-compose-postgres.yml stop && SERVER_PORT=8484 DB_PORT=15432 docker-compose -f docker-compose-postgres.yml up --build && open http://localhost:8484/about
-
-```
-### Run with local db and local build
-
-#### DB / Tables
-
-- H2
-    - No need of set up
+[GIT](https://github.com/muneer2ishtech/springboot-multi-db)
 
 
-- MariaDB / MySQL
-    - Connect to MariaDB
-        - `mariadb -u multidbuser -pmultidbpass -D multidb`
-    - Connect to MySQL
-        - `mysql -u multidbuser -pmultidbpass -D multidb`
+## DB
 
-```
--- DROP DATABASE IF EXISTS `multidb`;
-CREATE DATABASE IF NOT EXISTS `multidb`
-DEFAULT CHARACTER SET = utf8mb4
-DEFAULT COLLATE = utf8mb4_unicode_ci
-;
+- I have customized docker for various databases
+    - See [https://github.com/IshTech/docker-db](https://github.com/IshTech/docker-db)
 
--- DROP USER IF EXISTS `multidbuser`@`%`;
-CREATE USER IF NOT EXISTS `multidbuser`@`%`
-IDENTIFIED BY 'multidbpass'
-;
-
-GRANT CREATE, REFERENCES, INDEX, ALTER, LOCK TABLES ON `multidb`.* TO `multidbuser`@`%`;
-GRANT SELECT, INSERT, UPDATE ON `multidb`.* TO `multidbuser`@`%`;
+#### H2
+- No need of set up
 
 
-FLUSH PRIVILEGES;
-```
+#### MariaDB / MySQL
 
-- PostgreSQL
+- Login to DB as `root` and run [init_db_mysql.sql](src/test/resources/db/init_db_mysql.sql) to setup DB Schema, DB User and Grant privileges
 
-```
-psql -U multidbuser -W -d multidb
+- Connect to MariaDB
+    - `mariadb -u multidbuser -pmultidbpass -D multidb`
+- Connect to MySQL
+    - `mysql -u multidbuser -pmultidbpass -D multidb`
 
-CREATE DATABASE multidb;
 
-CREATE USER multidbuser WITH PASSWORD 'multidbpass';
+#### PostgreSQL
 
-GRANT ALL PRIVILEGES ON DATABASE multidb TO multidbuser;
+- Login to DB as `root` / `superuser` and run [init_db_postgres.sql](src/test/resources/db/init_db_postgres.sql) to setup DB Schema, DB User and Grant privileges
 
-\c multidb
+- Connect to PostgreSQL
+    - `psql -U multidbuser -W -d multidb`
+    - Enter password on prompt `multidbpass`
 
-GRANT USAGE, CREATE ON SCHEMA public TO multidbuser;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO multidbuser;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO multidbuser;
-```
 
-#### Junit
+## Build and Run
 
-- Need
-    - JDK25 or higher
-    - Docker
+### Maven
 
-- Test
+#### Junit Test
+
+- Local or Docker instance of DB should be running
 
 ```
 ./mvnw test -P h2       -Dspring.profiles.active=h2
@@ -92,8 +61,9 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE O
 
 ```
 
-- Run
-    - Ensure the port, db properties are correct in application-xxx.properties / application-xxx.yml
+#### Local Maven Run
+
+- Ensure the port, db properties are correct in application-xxx.properties / application-xxx.yml
 
 ```
 ./mvnw spring-boot:run -P h2       -Dspring-boot.run.profiles=h2
@@ -101,4 +71,72 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE O
 ./mvnw spring-boot:run -P mysql    -Dspring-boot.run.profiles=mysql
 ./mvnw spring-boot:run -P postgres -Dspring-boot.run.profiles=postgres
 
+```
+
+### Docker
+
+#### Run with docker compose
+
+- You can change port numbers as per your choice and availability
+- You can run any or all of below simulantenously
+
+##### Individually
+
+```
+export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
+echo $APP_VERSION
+
+SERVER_PORT=8181               APP_VERSION=$APP_VERSION docker-compose -f docker-compose-h2.yml       up --build
+
+SERVER_PORT=8282 DB_PORT=13306 APP_VERSION=$APP_VERSION docker-compose -f docker-compose-mysql.yml    up --build
+
+SERVER_PORT=8383 DB_PORT=23306 APP_VERSION=$APP_VERSION docker-compose -f docker-compose-mariadb.yml  up --build
+
+SERVER_PORT=8484 DB_PORT=15432 APP_VERSION=$APP_VERSION docker-compose -f docker-compose-postgres.yml up --build
+
+```
+
+#### All at once
+
+```
+export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
+echo $APP_VERSION
+
+SERVER_PORT_H2=8181 \
+SERVER_PORT_MYSQL=8282 DB_PORT_MYSQL=13306 \
+SERVER_PORT_MARIADB=8383 DB_PORT_MARIADB=23306 \
+SERVER_PORT_POSTGRES=8484 DB_PORT_POSTGRES=15432 \
+APP_VERSION=$APP_VERSION \
+docker-compose \
+  -f docker-compose-h2.yml \
+  -f docker-compose-mysql.yml \
+  -f docker-compose-mariadb.yml \
+  -f docker-compose-postgres.yml \
+up --build
+
+```
+
+
+### Test
+
+- H2
+    - <http://localhost:8181/about>
+
+
+- MariaDB
+    - <http://localhost:8282/about>
+
+
+- MySQL
+    - <http://localhost:8383/about>
+
+
+- PostgreSQL
+    - <http://localhost:8484/about>
+
+```
+start http://localhost:8181/about
+start http://localhost:8282/about
+start http://localhost:8383/about
+start http://localhost:8484/about
 ```

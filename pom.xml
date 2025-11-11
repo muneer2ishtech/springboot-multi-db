@@ -4,6 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -11,12 +12,12 @@
 		<relativePath />
 	</parent>
 
-	<groupId>fi.ishtech.practice</groupId>
-	<artifactId>ishtech-spring-boot-multi-db</artifactId>
-	<version>0.2.0</version>
+	<groupId>fi.ishtech.practice.springboot</groupId>
+	<artifactId>ishtech-springboot-multi-db</artifactId>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>spring-boot-multi-db</name>
+	<name>springboot-multi-db</name>
 	<description>Spring Boot example with connecting to different DB</description>
 
 	<licenses>
@@ -37,7 +38,7 @@
 	</developers>
 
 	<scm>
-		<url>https://github.com/muneer2ishtech/spring-boot-multi-db</url>
+		<url>https://github.com/muneer2ishtech/springboot-multi-db</url>
 	</scm>
 
 	<properties>
