@@ -133,3 +133,10 @@ up --build
 
 - PostgreSQL
     - <http://localhost:8484/about>
+
+```
+start http://localhost:8181/about
+start http://localhost:8282/about
+start http://localhost:8383/about
+start http://localhost:8484/about
+```
