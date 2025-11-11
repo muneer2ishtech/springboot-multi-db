@@ -3,3 +3,12 @@ spring:
     name: springboot-multi-db
   flyway:
     enabled: false
+  liquibase:
+    enabled: false
+
+logging:
+  level:
+    root: INFO
+    fi.ishtech: DEBUG
+    fi.ishtech.practice.multidb: TRACE
+
