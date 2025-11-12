@@ -1,13 +1,20 @@
 *.md
+!**/src/main/**/*.md
+!**/src/test/**/*.md
 
 ### Maven ###
+!.mvn/
 target/
-!.mvn
+!**/src/main/**/target/
+!**/src/test/**/target/
 pom.xml.versionsBackup
 
 ### Gradle ###
 .gradle
+!gradle/
 build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 ### STS ###
 .apt_generated
@@ -17,7 +24,10 @@ build/
 .settings
 .springBeans
 .sts4-cache
+
 bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
 .idea
@@ -25,6 +35,8 @@ bin/
 *.iml
 *.ipr
 out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
 ### NetBeans ###
 /nbproject/private/
