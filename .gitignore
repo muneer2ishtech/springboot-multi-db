@@ -26,6 +26,7 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -44,6 +45,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
 ### Log files ###
 *.log*
 
