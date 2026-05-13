@@ -3,7 +3,7 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 
 ## Tech stack
 - Java: 25
-- Spring Boot: 3.5.7
+- Spring Boot: 4.0.x
 - Containerization: Docker
 
 ### Databases
