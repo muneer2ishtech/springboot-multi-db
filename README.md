@@ -125,11 +125,11 @@ up \
 
 
 - MariaDB
-    - <http://localhost:8282/about>
+    - <http://localhost:8383/about>
 
 
 - MySQL
-    - <http://localhost:8383/about>
+    - <http://localhost:8282/about>
 
 
 - PostgreSQL
