@@ -2,7 +2,7 @@
 Spring Boot example with connecting to different DB by passing DB name as profile
 
 ## Tech stack
-- Java: 25
+- Java: 17
 - Spring Boot: 4.0.x
 - Containerization: Docker
 

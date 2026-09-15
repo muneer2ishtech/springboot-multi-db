@@ -1,5 +1,5 @@
 # ====== Stage 1: Build ======
-FROM eclipse-temurin:25-jdk AS build
+FROM eclipse-temurin:17-jdk AS build
 
 ARG DB_TO_USE
 RUN case "$DB_TO_USE" in \
@@ -21,7 +21,7 @@ RUN chmod +x ./mvnw
 RUN ./mvnw $MAVEN_CLI_OPTS clean package -DskipTests=true -P ${DB_TO_USE}
 
 # ====== Stage 2: Runtime ======
-FROM eclipse-temurin:25-jre
+FROM eclipse-temurin:17-jre
 
 ARG DB_TO_USE
 ENV SPRING_PROFILES_ACTIVE=${DB_TO_USE}
