@@ -6,7 +6,6 @@ services:
       args:
         DB_TO_USE: mariadb
         SERVER_PORT: ${SERVER_PORT_MARIADB:-${SERVER_PORT:-8080}}
-        APP_VERSION:
     image: muneer2ishtech/ishtech-springboot-multidb-app:${APP_VERSION:+$APP_VERSION-}mariadb
     container_name: ishtech_springboot_multidb_app_mariadb
     environment:

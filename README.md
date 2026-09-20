@@ -79,6 +79,7 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 
 - You can change port numbers as per your choice and availability
 - You can run any or all of below simulantenously
+- `APP_VERSION` is optional. It prefixes the tag of the built image, as `muneer2ishtech/ishtech-springboot-multidb-app:$APP_VERSION-<db>`, for example `muneer2ishtech/ishtech-springboot-multidb-app:3.1.0-SNAPSHOT-h2`. If skipped, the image is tagged with the database name alone, for example `muneer2ishtech/ishtech-springboot-multidb-app:h2`
 
 ##### Individually
 
