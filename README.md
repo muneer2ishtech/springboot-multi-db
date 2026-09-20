@@ -80,11 +80,14 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 - You can change port numbers as per your choice and availability
 - You can run any or all of below simulantenously
 - `APP_VERSION` is optional. It prefixes the tag of the built image, as `muneer2ishtech/ishtech-springboot-multidb-app:$APP_VERSION-<db>`, for example `muneer2ishtech/ishtech-springboot-multidb-app:3.1.0-SNAPSHOT-h2`. If skipped, the image is tagged with the database name alone, for example `muneer2ishtech/ishtech-springboot-multidb-app:h2`
+- Suggested: append `-local` to `APP_VERSION` when building locally, so a locally built image is not confused with, and does not overwrite, the same tag pulled from Docker Hub. The tag then reads `muneer2ishtech/ishtech-springboot-multidb-app:3.1.0-SNAPSHOT-local-h2`
 
 ##### Individually
 
 ```
 export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
+# when building locally, append the -local suffix instead
+# export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)-local
 echo $APP_VERSION
 
 SERVER_PORT=8181               APP_VERSION=$APP_VERSION docker-compose -f docker-compose-h2.yml       up --build
@@ -101,6 +104,8 @@ SERVER_PORT=8484 DB_PORT=55432 APP_VERSION=$APP_VERSION docker-compose -f docker
 
 ```
 export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)
+# when building locally, append the -local suffix instead
+# export APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout 2>/dev/null)-local
 echo $APP_VERSION
 
 SERVER_PORT_H2=8181 \
