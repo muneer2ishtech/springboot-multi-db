@@ -23,6 +23,6 @@ The docs are the source of truth. Don't guess commands: open the matching file a
 | run the API tests (part of Levels 2 and 3) | `README.md`, section "Build and Run", subsection "Test" |
 | touch the database for any other reason | `README.md`, section "DB" |
 | change the version or anything release-related, or check what CI enforces | `.github/workflows/cicd.yml` |
-| report or fix a bug | `KNOWN-ISSUES.md` (doesn't exist yet; create it as `rules/documentation.md` describes when the first issue is recorded) |
+| report or fix a bug | `KNOWN-ISSUES.md` first, it may already be recorded |
 
 If a doc is missing, wrong or unclear, fix the doc (see `rules/documentation.md`) instead of working around it.

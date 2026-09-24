@@ -55,6 +55,10 @@ Spring Boot example with connecting to different DB by passing DB name as profil
     - Enter password on prompt `multidbpass`
 
 
+## Known Issues
+- See [KNOWN-ISSUES.md](./KNOWN-ISSUES.md)
+
+
 ## Build and Run
 
 ### Maven
