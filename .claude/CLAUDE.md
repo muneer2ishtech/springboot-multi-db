@@ -17,11 +17,12 @@ The docs are the source of truth. Don't guess commands: open the matching file a
 |---|---|
 | work out what the application is and its tech stack | `README.md`, the introduction and section "Tech stack", subsection "Databases" |
 | run test Level 1 (build with tests) | `README.md`, section "Build and Run", subsection "Junit Test": one command per database profile. The `h2` profile needs no database (section "DB", subsection "H2") |
+| check the default JDK version or the other supported JDK versions | `README.md`, section "Tech stack"; for the `dev-jdkNN` branches and their releases, `rules/versions-and-releases.md`, section "JDK variants" |
 | run test Level 2 (run the app with Maven) | `README.md`, section "Build and Run", subsection "Local Maven Run": one command per database profile. Set up the database for that profile first: section "DB", subsections "H2", "MariaDB / MySQL" and "PostgreSQL" |
 | run test Level 3 (run with Docker compose) | `README.md`, section "Build and Run", subsections "Run with docker compose" (part "Individually": one compose file per database) and "All at once" (all compose files together) |
 | run the API tests (part of Levels 2 and 3) | `README.md`, section "Build and Run", subsection "Test" |
 | touch the database for any other reason | `README.md`, section "DB" |
 | change the version or anything release-related, or check what CI enforces | `.github/workflows/cicd.yml` |
-| report or fix a bug | `KNOWN-ISSUES.md` (doesn't exist yet; create it as `rules/documentation.md` describes when the first issue is recorded) |
+| report or fix a bug | `KNOWN-ISSUES.md` first, it may already be recorded |
 
 If a doc is missing, wrong or unclear, fix the doc (see `rules/documentation.md`) instead of working around it.

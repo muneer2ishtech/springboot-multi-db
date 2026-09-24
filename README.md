@@ -2,7 +2,11 @@
 Spring Boot example with connecting to different DB by passing DB name as profile
 
 ## Tech stack
-- Java: 25
+
+- JDK 25 (default)
+- Other supported JDK versions:
+  - JDK 21
+  - JDK 17
 - Spring Boot: 4.0.x
 - Containerization: Docker
 
@@ -11,6 +15,12 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 - MariaDB
 - MySQL
 - PostgreSQL
+
+### Application version for each JDK version
+
+- Releases for the default JDK version have plain version numbers, for example `x.y.z`. They are built from the branches `dev` and `main`.
+- Releases for another supported JDK version have the same version number with the suffix `-jdkNN`, for example `x.y.z-jdk21` for JDK 21. They are built from the branch `dev-jdkNN`, for example `dev-jdk21`, from the same code, adapted where that JDK version needs it.
+- Each release is published as the Docker image `muneer2ishtech/ishtech-springboot-multidb-app` on Docker Hub, with one tag for each database: the version followed by `-h2`, `-postgres`, `-mysql` or `-mariadb`, for example `x.y.z-postgres` or `x.y.z-jdk21-postgres`.
 
 ##
 
@@ -43,6 +53,10 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 - Connect to PostgreSQL
     - `psql -U multidbuser -W -d multidb`
     - Enter password on prompt `multidbpass`
+
+
+## Known Issues
+- See [KNOWN-ISSUES.md](./KNOWN-ISSUES.md)
 
 
 ## Build and Run
