@@ -2,7 +2,11 @@
 Spring Boot example with connecting to different DB by passing DB name as profile
 
 ## Tech stack
-- Java: 21
+
+- JDK 25 (default)
+- Other supported JDK versions:
+  - JDK 21
+  - JDK 17
 - Spring Boot: 4.0.x
 - Containerization: Docker
 
@@ -11,6 +15,8 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 - MariaDB
 - MySQL
 - PostgreSQL
+
+Which application version (Docker image tag) to use for your JDK version: [JDK-VERSIONS.md](JDK-VERSIONS.md).
 
 ##
 
@@ -43,6 +49,10 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 - Connect to PostgreSQL
     - `psql -U multidbuser -W -d multidb`
     - Enter password on prompt `multidbpass`
+
+
+## Known Issues
+- See [KNOWN-ISSUES.md](./KNOWN-ISSUES.md)
 
 
 ## Build and Run
