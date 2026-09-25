@@ -146,13 +146,12 @@ docker compose -f docker-compose-h2.yml stop
 
 ```
 
-- To stop and remove the containers, the database data (volumes) and the images
+- To stop and remove the containers, the database data (volumes) and the built application image
     - Set `APP_VERSION` to the same value as for `up`, because the name of the image to remove is built from it
-    - `--rmi all` also removes the pulled database image (for example `postgres:18`), which is downloaded again on the next `up`
-    - `--rmi local` is not enough: it removes only images without a custom tag, and every compose file sets a custom image tag
+    - The pulled database image (for example `mariadb:lts`) is kept
 
 ```
-APP_VERSION=$APP_VERSION docker compose -f docker-compose-h2.yml down -v --rmi all
+APP_VERSION=$APP_VERSION docker compose -f docker-compose-h2.yml down -v --rmi local
 
 APP_VERSION=$APP_VERSION \
 docker compose \
@@ -160,7 +159,7 @@ docker compose \
   -f docker-compose-mysql.yml \
   -f docker-compose-mariadb.yml \
   -f docker-compose-postgres.yml \
-down -v --rmi all
+down -v --rmi local
 
 ```
 
