@@ -10,6 +10,7 @@ services:
     container_name: ishtech_springboot_multidb_app_postgres
     environment:
       SPRING_PROFILES_ACTIVE: postgres
+      SERVER_PORT: ${SERVER_PORT_POSTGRES:-${SERVER_PORT:-8080}}
       SPRING_DATASOURCE_URL: jdbc:postgresql://ishtech-springboot-multidb-db-postgres:5432/multidb
     ports:
       - "${SERVER_PORT_POSTGRES:-${SERVER_PORT:-8080}}:${SERVER_PORT_POSTGRES:-${SERVER_PORT:-8080}}"

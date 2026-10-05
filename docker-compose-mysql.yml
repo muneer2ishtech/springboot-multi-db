@@ -10,6 +10,7 @@ services:
     container_name: ishtech_springboot_multidb_app_mysql
     environment:
       SPRING_PROFILES_ACTIVE: mysql
+      SERVER_PORT: ${SERVER_PORT_MYSQL:-${SERVER_PORT:-8080}}
       SPRING_DATASOURCE_URL: jdbc:mysql://ishtech-springboot-multidb-db-mysql:3306/multidb
     ports:
       - "${SERVER_PORT_MYSQL:-${SERVER_PORT:-8080}}:${SERVER_PORT_MYSQL:-${SERVER_PORT:-8080}}"
