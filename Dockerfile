@@ -15,7 +15,7 @@ WORKDIR /app
 
 COPY . .
 
-ARG MAVEN_CLI_OPTS="-B -q"
+ARG MAVEN_CLI_OPTS="-B -q -s .mvn/settings.xml"
 
 RUN chmod +x ./mvnw
 RUN ./mvnw $MAVEN_CLI_OPTS clean package -DskipTests=true -P ${DB_TO_USE}
