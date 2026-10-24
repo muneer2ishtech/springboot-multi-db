@@ -39,7 +39,7 @@ jobs:
       actions: read
 
     env:
-      MAVEN_CLI_OPTS: "-B -q"
+      MAVEN_CLI_OPTS: "-B -q -s .mvn/settings.xml"
 
     steps:
       - name: Checkout code
