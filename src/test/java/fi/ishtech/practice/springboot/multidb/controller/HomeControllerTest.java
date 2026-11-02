@@ -51,10 +51,10 @@ public class HomeControllerTest {
 
 	@Test
 	@Order(3)
-	public void testAboutVersion() throws Exception {
+	public void testAboutApplicationVersion() throws Exception {
 		mvc.perform(get("/about"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.version").value(projectVersion));
+			.andExpect(jsonPath("$.applicationVersion").value(projectVersion));
 	}
 
 }

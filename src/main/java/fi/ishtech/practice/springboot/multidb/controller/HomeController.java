@@ -56,7 +56,7 @@ public class HomeController {
 		results.put("applicationName", appName);
 		results.put("activeProfile", activeProfile);
 
-		results.put("version", appVersion());
+		results.put("applicationVersion", appVersion());
 
 		results.put("datasource", ds);
 
