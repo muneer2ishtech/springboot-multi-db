@@ -33,6 +33,9 @@ public class HomeControllerTest {
 	@Value("${project.version}")
 	private String projectVersion;
 
+	@Value("${spring-boot.version}")
+	private String springBootVersion;
+
 	@Test
 	@Order(1)
 	public void testIndexOk() throws Exception {
@@ -55,6 +58,14 @@ public class HomeControllerTest {
 		mvc.perform(get("/about"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.applicationVersion").value(projectVersion));
+	}
+
+	@Test
+	@Order(4)
+	public void testAboutSpringBootVersion() throws Exception {
+		mvc.perform(get("/about"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.springBootVersion").value(springBootVersion));
 	}
 
 }

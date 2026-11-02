@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +58,7 @@ public class HomeController {
 		results.put("activeProfile", activeProfile);
 
 		results.put("applicationVersion", appVersion());
+		results.put("springBootVersion", SpringBootVersion.getVersion());
 
 		results.put("datasource", ds);
 

@@ -106,6 +106,7 @@
 				<configuration>
 					<systemPropertyVariables>
 						<project.version>${project.version}</project.version>
+						<spring-boot.version>${project.parent.version}</spring-boot.version>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
