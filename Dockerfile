@@ -15,13 +15,18 @@ WORKDIR /app
 
 COPY . .
 
-ARG MAVEN_CLI_OPTS="-B -q"
+ARG MAVEN_CLI_OPTS="-B -q -s .mvn/settings.xml"
 
 RUN chmod +x ./mvnw
 RUN ./mvnw $MAVEN_CLI_OPTS clean package -DskipTests=true -P ${DB_TO_USE}
 
 # ====== Stage 2: Runtime ======
 FROM eclipse-temurin:25-jre
+
+# Install curl, needed by the docker compose healthcheck
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 
 ARG DB_TO_USE
 ENV SPRING_PROFILES_ACTIVE=${DB_TO_USE}
