@@ -14,7 +14,7 @@
 
 	<groupId>fi.ishtech.practice.springboot</groupId>
 	<artifactId>ishtech-springboot-multi-db</artifactId>
-	<version>4.0.0-jdk21</version>
+	<version>4.1.0-jdk21-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>springboot-multi-db</name>
