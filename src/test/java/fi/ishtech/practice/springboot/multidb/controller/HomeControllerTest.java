@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +30,12 @@ public class HomeControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
+	@Value("${project.version}")
+	private String projectVersion;
+
+	@Value("${spring-boot.version}")
+	private String springBootVersion;
+
 	@Test
 	@Order(1)
 	public void testIndexOk() throws Exception {
@@ -43,6 +50,22 @@ public class HomeControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.applicationName").exists())
 			.andExpect(jsonPath("$.dbProductName").exists());
+	}
+
+	@Test
+	@Order(3)
+	public void testAboutApplicationVersion() throws Exception {
+		mvc.perform(get("/about"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.applicationVersion").value(projectVersion));
+	}
+
+	@Test
+	@Order(4)
+	public void testAboutSpringBootVersion() throws Exception {
+		mvc.perform(get("/about"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.springBootVersion").value(springBootVersion));
 	}
 
 }
