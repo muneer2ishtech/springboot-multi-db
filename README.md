@@ -7,7 +7,7 @@ Spring Boot example with connecting to different DB by passing DB name as profil
 - Other supported JDK versions:
   - JDK 21
   - JDK 17
-- Spring Boot: 4.0.x
+- Spring Boot: 4.1.x
 - Containerization: Docker
 
 ### Databases
